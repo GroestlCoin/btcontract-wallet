@@ -3,7 +3,7 @@
 
     <!-- app wide -->
     <string name="or">или</string>
-    <string name="app_name">Bitcoin</string>
+    <string name="app_name">Groestlcoin</string>
     <string name="sets_noscreen">Не делайте скриншот</string>
     <string name="sets_password_ok">Новый пароль успешно установлен</string>
     <string name="sets_destruct_ok">Установлен новый код уничтожения: «%1$s»</string>
@@ -75,8 +75,8 @@
     <string name="spend_address_hint">Биткоин-адрес</string>
     <string name="input_sat">&#160;Cатоши&#160;</string>
     <string name="input_bit">&#160;Bits&#160;</string>
-    <string name="input_btc">&#160;BTC&#160;</string>
-    <string name="input_alt_btc">%1$s BTC</string>
+    <string name="input_btc">&#160;GRS&#160;</string>
+    <string name="input_alt_btc">%1$s GRS</string>
 
     <array name="dialog_request">
         <item>Сделать QR-код запроса</item>

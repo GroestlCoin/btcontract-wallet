@@ -3,11 +3,11 @@
 
     <!-- app wide -->
     <string name="or">або</string>
-    <string name="app_name">Bitcoin</string>
+    <string name="app_name">Groestlcoin</string>
     <string name="sets_noscreen">Не робіть скріншот</string>
     <string name="sets_password_ok">Новий пароль успішно встановлено</string>
     <string name="sets_destruct_ok">Встановлено новий код знищення: «%1$s»</string>
-    <string name="greetings">Bitcoin-гаманець\n<a href='https://btcontract.com'>інструкція користувача</a></string>
+    <string name="greetings">Groestlcoin-гаманець\n<a href='https://btcontract.com'>інструкція користувача</a></string>
     <string name="sets_rescan_ok">Зараз гаманець буде закритий, сканування почнеться коли ви відкриєте його наступного разу</string>
     <string name="password_info">Будь ласка, підберіть пароль довжиною не менше 8 ніж символів, бажано такий що містить в собі великі літери і цифри</string>
     <string name="fee_default"><![CDATA[<small>Комісія %1$s<br><font color=#999999><small>Підтвердження може зайняти години</small></font></small>]]></string>
@@ -75,8 +75,8 @@
     <string name="spend_address_hint">Біткоін-адреса</string>
     <string name="input_sat">&#160;Cатоші&#160;</string>
     <string name="input_bit">&#160;Bits&#160;</string>
-    <string name="input_btc">&#160;BTC&#160;</string>
-    <string name="input_alt_btc">%1$s BTC</string>
+    <string name="input_btc">&#160;GRS&#160;</string>
+    <string name="input_alt_btc">%1$s GRS</string>
 
     <array name="dialog_request">
         <item>Перетворити запит у QR-код</item>
@@ -117,7 +117,7 @@
     <string name="txs_fee_absent"><![CDATA[%1$s<br><strong>Без комісії</strong>]]></string>
     <string name="txs_sum_out"><![CDATA[<font color=#E31300>%1$s</font>]]></string>
     <string name="txs_sum_in"><![CDATA[<font color=#1BA2E0>%1$s</font>]]></string>
-    <string name="txs_view_outside">Дивитись на BlockExplorer.com</string>
+    <string name="txs_view_outside">Дивитись на Groestlsight</string>
 
     <array name="txs_confs">
         <item><![CDATA[<font color=#E31300>Ще не пiдтверджена</font>]]></item>

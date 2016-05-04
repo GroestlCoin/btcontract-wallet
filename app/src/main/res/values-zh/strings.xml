@@ -3,7 +3,7 @@
 
     <!-- app wide -->
     <string name="or">或</string>
-    <string name="app_name">Bitcoin</string>
+    <string name="app_name">Groestlcoin</string>
     <string name="sets_noscreen">不要截屏</string>
     <string name="sets_password_ok">新密码已设置成功</string>
     <string name="sets_destruct_ok">销毁代码已设置«%1$s»</string>
@@ -75,8 +75,8 @@
     <string name="spend_address_hint">比特币地址</string>
     <string name="input_sat">&#160;Satoshi&#160;</string>
     <string name="input_bit">&#160;Bits&#160;</string>
-    <string name="input_btc">&#160;BTC&#160;</string>
-    <string name="input_alt_btc">%1$s BTC</string>
+    <string name="input_btc">&#160;GRS&#160;</string>
+    <string name="input_alt_btc">%1$s GRS</string>
 
     <array name="dialog_request">
         <item>将请求转换为QR代码</item>
@@ -115,7 +115,7 @@
     <string name="txs_fee_absent"><![CDATA[%1$s<br><strong>不收费</strong>]]></string>
     <string name="txs_sum_out"><![CDATA[<font color=#E31300>%1$s</font>]]></string>
     <string name="txs_sum_in"><![CDATA[<font color=#1BA2E0>%1$s</font>]]></string>
-    <string name="txs_view_outside">观 BlockExplorer.com</string>
+    <string name="txs_view_outside">观 Groestlsight</string>
 
     <array name="txs_confs">
         <item><![CDATA[<font color=#E31300>尚未确定</font>]]></item>

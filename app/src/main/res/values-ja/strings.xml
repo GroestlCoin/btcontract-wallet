@@ -3,7 +3,7 @@
 
     <!-- app wide -->
     <string name="or">または</string>
-    <string name="app_name">Bitcoin</string>
+    <string name="app_name">Groestlcoin</string>
     <string name="sets_noscreen">スクリーンショットは行わないでください</string>
     <string name="sets_password_ok">新しいパスワードを正常に設定しました</string>
     <string name="sets_destruct_ok">ディストラクション コードを «%1$s» に設定しました</string>
@@ -65,7 +65,7 @@
     <string name="dialog_next">次へ</string>
     <string name="dialog_back">戻る</string>
     <string name="dialog_cancel">キャンセル</string>
-    <string name="input_hint_btc">金額 (BTC)</string>
+    <string name="input_hint_btc">金額 (GRS)</string>
     <string name="input_hint_bit">金額 (bits)</string>
     <string name="input_hint_sat">金額 (satoshi)</string>
     <string name="spend_address_tip">お金を送る先</string>
@@ -75,8 +75,8 @@
     <string name="dialog_sum_dusty">現在の金額は埃です</string>
     <string name="input_sat">&#160;Satoshi&#160;</string>
     <string name="input_bit">&#160;Bits&#160;</string>
-    <string name="input_btc">&#160;BTC&#160;</string>
-    <string name="input_alt_btc">%1$s BTC</string>
+    <string name="input_btc">&#160;GRS&#160;</string>
+    <string name="input_alt_btc">%1$s GRS</string>
 
     <array name="dialog_request">
         <item>リクエストを QR コードに変換</item>
@@ -115,7 +115,7 @@
     <string name="txs_fee_absent"><![CDATA[%1$s<br><strong>No fee</strong>]]></string>
     <string name="txs_sum_out"><![CDATA[<font color=#E31300>%1$s</font>]]></string>
     <string name="txs_sum_in"><![CDATA[<font color=#1BA2E0>%1$s</font>]]></string>
-    <string name="txs_view_outside">BlockExplorer.com で表示</string>
+    <string name="txs_view_outside">Groestlsight で表示</string>
 
     <array name="txs_confs">
         <item><![CDATA[<font color=#E31300>まだ確認されません</font>]]></item>
