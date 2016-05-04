@@ -4,9 +4,10 @@ import R.string._
 import android.widget._
 import Utils.{wrap, app}
 import scala.util.{Success, Try}
-import org.bitcoinj.core.{PeerGroup, BlockChain, Wallet}
+import org.bitcoinj.core.{PeerGroup, BlockChain}
+import org.bitcoinj.wallet.Wallet
 import concurrent.ExecutionContext.Implicits.global
-import org.bitcoinj.store.WalletProtobufSerializer
+import org.bitcoinj.wallet.WalletProtobufSerializer
 import android.text.method.LinkMovementMethod
 import android.view.View.OnClickListener
 import scala.concurrent.Future
@@ -48,7 +49,7 @@ class MainActivity extends TimerActivity with ViewSwitch { me =>
       case ok@Success(dataNotNull: String) =>
         // Okay, we've got a real string, now try to convert it
         val attempt = ok.map(app.TransData.setValue).map(_ => next)
-        // So we've indeed got a string, but it is not Bitcoin-related
+        // So we've indeed got a string, but it is not Groestlcoin-related
         attempt.recover(app.TransData onFail errorWarn)
 
       // Usual launch

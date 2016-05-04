@@ -5,7 +5,8 @@ import java.util.Calendar
 import org.bitcoinj.store.SPVBlockStore
 import android.widget.DatePicker.OnDateChangedListener
 import org.bitcoinj.wallet.{KeyChainGroup, DeterministicSeed}
-import org.bitcoinj.core.{PeerGroup, BlockChain, Wallet}
+import org.bitcoinj.core.{PeerGroup, BlockChain}
+import org.bitcoinj.wallet.Wallet
 import Utils.{wrap, app, none, runAnd}
 import android.view.{ViewGroup, View}
 import android.widget._

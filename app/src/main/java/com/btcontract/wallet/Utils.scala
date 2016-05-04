@@ -1,5 +1,8 @@
 package com.btcontract.wallet
 
+import org.bitcoinj.wallet.Wallet
+import org.bitcoinj.wallet.listeners._
+
 import concurrent.ExecutionContext.Implicits.global
 import info.hoang8f.android.segmented.SegmentedGroup
 import android.widget.RadioGroup.OnCheckedChangeListener
@@ -17,8 +20,9 @@ import android.net.Uri
 
 import android.text.method.{LinkMovementMethod, DigitsKeyListener}
 import R.id.{amtInSat, amtInBtc, amtInBit, typeUSD, typeEUR, typeCNY}
-import org.bitcoinj.core.Wallet.{ExceededMaxTransactionSize => TxTooLarge}
-import org.bitcoinj.core.Wallet.{CouldNotAdjustDownwards, SendRequest}
+import org.bitcoinj.wallet.Wallet.{ExceededMaxTransactionSize => TxTooLarge}
+import org.bitcoinj.wallet.Wallet.CouldNotAdjustDownwards
+import org.bitcoinj.wallet.SendRequest;
 import org.bitcoinj.core.{InsufficientMoneyException => NoFunds}
 import android.content.{DialogInterface, Context, Intent}
 import java.text.{DecimalFormatSymbols, DecimalFormat}
@@ -58,7 +62,7 @@ object Utils { me =>
   val fiatMap = Map(typeUSD -> strDollar, typeEUR -> strEuro, typeCNY -> strYuan)
   val revFiatMap = Map(strDollar -> typeUSD, strEuro -> typeEUR, strYuan -> typeCNY)
 
-  val appName = "Bitcoin"
+  val appName = "Groestlcoin"
   val nullFail = Failure(null)
   val rand = new scala.util.Random
   lazy val sumIn = app getString txs_sum_in
@@ -102,7 +106,7 @@ object Utils { me =>
 
 // Info stack manager
 abstract class InfoActivity extends AnimatorActivity { me =>
-  val tracker = new MyWalletChangeListener with WalletCoinEventListener {
+  val tracker = new MyWalletChangeListener with WalletCoinsReceivedEventListener with WalletCoinsSentEventListener {
     def onCoinsReceived(w: Wallet, tx: Transaction, pb: Coin, nb: Coin) = if (nb isGreaterThan pb)
       anim(me getString tx_received format btc(nb subtract pb), Informer.RECEIVED)
 
@@ -116,8 +120,10 @@ abstract class InfoActivity extends AnimatorActivity { me =>
   // Peers listeners
   class CatchTracker extends MyPeerDataListener {
     def onBlocksDownloaded(p: Peer, b: Block, fb: FilteredBlock, left: Int) = {
-      app.kit.peerGroup addDataEventListener new NextTracker(blocksNumberLeftOnStart = left)
-      app.kit.peerGroup removeDataEventListener this
+      //app.kit.peerGroup addDataEventListener new NextTracker(blocksNumberLeftOnStart = left)
+      app.kit.peerGroup addBlocksDownloadedEventListener new NextTracker(blocksNumberLeftOnStart = left)
+      //app.kit.peerGroup removeDataEventListener this
+      app.kit.peerGroup removeBlocksDownloadedEventListener this
     }
   }
 
@@ -125,7 +131,7 @@ abstract class InfoActivity extends AnimatorActivity { me =>
     def onBlocksDownloaded(peer: Peer, block: Block, fBlock: FilteredBlock, left: Int) = {
       if (blocksNumberLeftOnStart > 144) update(howManyBlocksLeftInPlainText format left, Informer.SYNC)
       if (left < 1) add(getString(info_progress_done), Informer.SYNC).timer.schedule(me del Informer.SYNC, 5000)
-      if (left < 1) app.kit.peerGroup removeDataEventListener this
+      if (left < 1) app.kit.peerGroup removeBlocksDownloadedEventListener this
       if (left < 1) app.kit.wallet saveToFile app.walletFile
       runOnUiThread(ui)
     }
@@ -135,12 +141,19 @@ abstract class InfoActivity extends AnimatorActivity { me =>
     if (blocksNumberLeftOnStart > 144) add(howManyBlocksLeftOnStart, Informer.SYNC)
   }
 
-  val constListener = new PeerConnectionEventListener {
-    def mkTxt = app.plurOrZero(peersInfoOpts, app.kit.peerGroup.numConnectedPeers)
-    def onPeerDisconnected(p: Peer, pc: Int) = me runOnUiThread update(mkTxt, Informer.PEERS).ui
-    def onPeerConnected(p: Peer, pc: Int) = me runOnUiThread update(mkTxt, Informer.PEERS).ui
+  trait MyPeerConnectionEventListener extends PeerConnectedEventListener with PeerDisconnectedEventListener with PeerDiscoveredEventListener  {
+    def onPeerDisconnected(p: Peer, pc: Int) = none
+    def onPeerConnected(p: Peer, pc: Int) = none
     def onPeersDiscovered(pas: PeerAddresses) = none
     type PeerAddresses = java.util.Set[PeerAddress]
+  }
+
+  val constListener = new MyPeerConnectionEventListener {
+    def mkTxt = app.plurOrZero(peersInfoOpts, app.kit.peerGroup.numConnectedPeers)
+    override def onPeerDisconnected(p: Peer, pc: Int) = me runOnUiThread update(mkTxt, Informer.PEERS).ui
+    override def onPeerConnected(p: Peer, pc: Int) = me runOnUiThread update(mkTxt, Informer.PEERS).ui
+    //def onPeersDiscovered(pas: PeerAddresses) = none
+    //type PeerAddresses = java.util.Set[PeerAddress]
   }
 
   lazy val peersInfoOpts = getResources getStringArray R.array.info_peers
@@ -613,7 +626,7 @@ abstract class TextChangedWatcher extends TextWatcher {
   override def afterTextChanged(s: Editable) = none
 }
 
-trait MyWalletChangeListener extends WalletChangeEventListener {
+trait MyWalletChangeListener extends WalletChangeEventListener with WalletReorganizeEventListener with KeyChainEventListener with ScriptsChangeEventListener  {
   def onScriptsChanged(wlt: Wallet, scs: Scripts, a: Boolean) = none
   def onWalletChanged(affectedWallet: Wallet) = none
   def onReorganize(wallet: Wallet) = none

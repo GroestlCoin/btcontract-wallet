@@ -10,8 +10,9 @@ import R.drawable.{dead, conf0, conf5}
 import android.provider.Settings.{System => FontSystem}
 import android.text.format.DateUtils.getRelativeTimeSpanString
 import android.widget.AbsListView.OnScrollListener
+import org.bitcoinj.wallet.Wallet
 import collection.JavaConversions.asScalaBuffer
-import listeners.WalletCoinEventListener
+import org.bitcoinj.wallet.listeners.{WalletCoinsSentEventListener, WalletCoinsReceivedEventListener, WalletReorganizeEventListener}
 import android.view.View.OnClickListener
 import android.app.AlertDialog.Builder
 import android.text.format.DateFormat
@@ -37,7 +38,7 @@ class TxsActivity extends InfoActivity { me =>
   lazy private[this] val feeDetails = getString(txs_fee_details)
   lazy private[this] val feeAbsent = getString(txs_fee_absent)
 
-  val transactionsTracker = new MyWalletChangeListener with WalletCoinEventListener {
+  val transactionsTracker = new MyWalletChangeListener with WalletReorganizeEventListener  with WalletCoinsReceivedEventListener with WalletCoinsSentEventListener{
     def onTransactionConfidenceChanged(w: Wallet, tx: Transaction) = if (tx.getConfidence.getDepthInBlocks < 2) onReorganize(w)
     def onCoinsReceived(w: Wallet, tx: Transaction, pb: Coin, nb: Coin) = if (nb isGreaterThan pb) me runOnUiThread tell(tx)
     def onCoinsSent(w: Wallet, tx: Transaction, pb: Coin, nb: Coin) = me runOnUiThread tell(tx)
@@ -95,7 +96,7 @@ class TxsActivity extends InfoActivity { me =>
         // Compute required variables
         val totalSum = s"${txPlus.human}<br><small>${me time txPlus.tx.getUpdateTime}</small>"
         val pays = getPays(txPlus.tx.getOutputs, mutable.Buffer.empty, txPlus.value.isPositive)
-        val site = new Intent(Intent.ACTION_VIEW, Uri parse s"https://blockexplorer.com/tx/$hash")
+        val site = new Intent(Intent.ACTION_VIEW, Uri parse s"http://groestlsight.groestlcoin.org/tx/$hash")
         val txt = for (payment <- pays) yield Html.fromHtml(payment pretty txPlus.route)
 
         // Wire everything up
@@ -110,7 +111,10 @@ class TxsActivity extends InfoActivity { me =>
       // Wait for transactions list
       <(app.kit.wallet.getTransactionsByTime, onFail) { result =>
         app.kit.wallet addChangeEventListener transactionsTracker
-        app.kit.wallet addCoinEventListener transactionsTracker
+        //app.kit.wallet addCoinEventListener transactionsTracker
+        app.kit.wallet addCoinsReceivedEventListener transactionsTracker
+        app.kit.wallet addCoinsSentEventListener transactionsTracker
+
 
         // Show limited txs list
         val range = scala.math.min(linesNum, result.size)
@@ -129,19 +133,36 @@ class TxsActivity extends InfoActivity { me =>
       }
 
       // Wire up listeners
-      app.kit.peerGroup addDataEventListener new CatchTracker
-      app.kit.peerGroup addConnectionEventListener constListener
+      //app.kit.peerGroup addDataEventListener new CatchTracker
+       app.kit.peerGroup addBlocksDownloadedEventListener new CatchTracker
+
+      //app.kit.peerGroup addConnectionEventListener constListener
+      app.kit.peerGroup addConnectedEventListener constListener
+      app.kit.peerGroup addDisconnectedEventListener constListener
+      app.kit.peerGroup addDiscoveredEventListener constListener
+
       app.kit.wallet addChangeEventListener tracker
-      app.kit.wallet addCoinEventListener tracker
+      //app.kit.wallet addCoinEventListener tracker
+      app.kit.wallet addCoinsReceivedEventListener tracker
+      app.kit.wallet addCoinsSentEventListener tracker
+
     } else me exitTo classOf[MainActivity]
   }
 
   override def onDestroy = wrap(super.onDestroy) {
-    app.kit.peerGroup removeConnectionEventListener constListener
+    //app.kit.peerGroup removeConnectionEventListener constListener
+    app.kit.peerGroup removeConnectedEventListener constListener
+    app.kit.peerGroup removeDisconnectedEventListener constListener
+    app.kit.peerGroup removeDiscoveredEventListener constListener
+
     app.kit.wallet removeChangeEventListener transactionsTracker
-    app.kit.wallet removeCoinEventListener transactionsTracker
+    //app.kit.wallet removeCoinEventListener transactionsTracker
+    app.kit.wallet removeCoinsReceivedEventListener transactionsTracker
+    app.kit.wallet removeCoinsSentEventListener transactionsTracker
     app.kit.wallet removeChangeEventListener tracker
-    app.kit.wallet removeCoinEventListener tracker
+    //app.kit.wallet removeCoinEventListener tracker
+    app.kit.wallet removeCoinsReceivedEventListener tracker
+    app.kit.wallet removeCoinsSentEventListener tracker
   }
 
   def showAll(v: View) = {

@@ -8,7 +8,8 @@ import android.os.Bundle
 import android.view.View
 
 import android.widget.{EditText, Button, TextView, LinearLayout}
-import org.bitcoinj.core.{PeerGroup, BlockChain, Wallet}
+import org.bitcoinj.core.{PeerGroup, BlockChain}
+import org.bitcoinj.wallet.Wallet
 import Utils.{wrap, app}
 import R.string._
 

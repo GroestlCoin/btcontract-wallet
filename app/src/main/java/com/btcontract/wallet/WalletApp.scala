@@ -3,15 +3,15 @@ package com.btcontract.wallet
 import R.string._
 import org.bitcoinj.core._
 import com.btcontract.wallet.Utils._
-import org.bitcoinj.core.listeners.WalletCoinEventListener
+import org.bitcoinj.core.listeners.TransactionConfidenceEventListener
 import collection.JavaConverters.asScalaBufferConverter
 import com.google.common.util.concurrent.Service.State
 import org.bitcoinj.net.discovery.DnsDiscovery
 import org.bitcoinj.wallet.KeyChain.KeyPurpose
-import org.bitcoinj.core.Wallet.BalanceType
+import org.bitcoinj.wallet.Wallet.BalanceType
 import org.bitcoinj.crypto.KeyCrypterScrypt
 import com.google.protobuf.ByteString
-import org.bitcoinj.wallet.Protos
+import org.bitcoinj.wallet.{Wallet, Protos}
 import android.app.Application
 import android.widget.Toast
 import java.io.File
@@ -70,7 +70,7 @@ class WalletApp extends Application {
     var value = Option.empty[Any]
     def setValue(text: String) = value = Option {
       // Both getTo and BitcoinUri may throw so watch over
-      if (text startsWith "bitcoin") new BitcoinURI(params, text)
+      if (text startsWith "groestlcoin") new BitcoinURI(params, text)
       else getTo(text)
     }
 
@@ -105,12 +105,12 @@ class WalletApp extends Application {
     }
 
     def setupAndStartDownload = {
-      wallet addCoinEventListener Vibr.listener
+      wallet addTransactionConfidenceEventListener Vibr.listener
       wallet addChangeEventListener Vibr.listener
       wallet.allowSpendingUnconfirmedTransactions
       peerGroup addPeerDiscovery new DnsDiscovery(params)
       peerGroup.setUserAgent(Utils.appName, "1.06")
-      peerGroup setDownloadTxDependencies false
+      peerGroup setDownloadTxDependencies -1
       peerGroup setPingIntervalMsec 10000
       peerGroup setMaxConnections 10
       peerGroup addWallet wallet
@@ -127,7 +127,7 @@ object Vibr {
   val processed = Array(0L, 85, 200)
   type Pattern = Array[Long]
 
-  val listener = new WalletCoinEventListener with MyWalletChangeListener {
+  val listener = new TransactionConfidenceEventListener with MyWalletChangeListener {
     def onTransactionConfidenceChanged(w: Wallet, tx: Transaction) = if (tx.getConfidence.getDepthInBlocks == 1) vibrate(confirmed)
     def onCoinsReceived(w: Wallet, t: Transaction, pb: Coin, nb: Coin) = if (nb isGreaterThan pb) vibrate(processed)
     def onCoinsSent(w: Wallet, t: Transaction, pb: Coin, nb: Coin) = vibrate(processed)

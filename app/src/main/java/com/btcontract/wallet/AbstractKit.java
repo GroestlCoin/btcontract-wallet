@@ -9,6 +9,7 @@ import org.bitcoinj.core.listeners.PeerDataEventListener;
 import org.bitcoinj.store.SPVBlockStore;
 import javax.annotation.Nullable;
 import org.bitcoinj.core.*;
+import org.bitcoinj.wallet.Wallet;
 import java.util.List;
 
 
