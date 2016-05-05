@@ -72,8 +72,8 @@ object Utils { me =>
   val locale = new Locale("en", "US")
   val baseFiat = new DecimalFormat("#.##")
   val baseBtc = new DecimalFormat("#.########")
-  val baseSat = new DecimalFormat("###,###,###")
-  val baseBit = new DecimalFormat("#,###,###.##")
+  val baseSat = new DecimalFormat("#,###,###.##")
+  val baseBit = new DecimalFormat("#,###,###.#####")
   val symbols = new DecimalFormatSymbols(locale)
 
   baseFiat setDecimalFormatSymbols symbols
@@ -81,8 +81,8 @@ object Utils { me =>
   baseSat setDecimalFormatSymbols symbols
   baseBtc setDecimalFormatSymbols symbols
 
-  def sat(coin: Coin) = baseSat format coin.value
-  def bit(coin: Coin) = baseBit format BigDecimal(coin.value) / 100
+  def sat(coin: Coin) = baseSat format BigDecimal(coin.value) / 100
+  def bit(coin: Coin) = baseBit format BigDecimal(coin.value) / 100000
   def btc(coin: Coin) = baseBtc format BigDecimal(coin.value) / 100000000
 
   // App wide utility functions

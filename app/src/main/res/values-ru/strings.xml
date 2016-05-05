@@ -74,7 +74,7 @@
     <string name="dialog_sum_dusty">Сумма слишком мала</string>
     <string name="spend_address_hint">Биткоин-адрес</string>
     <string name="input_sat">&#160;Cатоши&#160;</string>
-    <string name="input_bit">&#160;Bits&#160;</string>
+    <string name="input_bit">&#160;mGRS&#160;</string>
     <string name="input_btc">&#160;GRS&#160;</string>
     <string name="input_alt_btc">%1$s GRS</string>
 

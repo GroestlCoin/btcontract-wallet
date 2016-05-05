@@ -96,7 +96,7 @@ class TxsActivity extends InfoActivity { me =>
         // Compute required variables
         val totalSum = s"${txPlus.human}<br><small>${me time txPlus.tx.getUpdateTime}</small>"
         val pays = getPays(txPlus.tx.getOutputs, mutable.Buffer.empty, txPlus.value.isPositive)
-        val site = new Intent(Intent.ACTION_VIEW, Uri parse s"http://groestlsight.groestlcoin.org/tx/$hash")
+        val site = new Intent(Intent.ACTION_VIEW, Uri parse s"https://chainz.cryptoid.info/grs/tx.dws?$hash.htm")
         val txt = for (payment <- pays) yield Html.fromHtml(payment pretty txPlus.route)
 
         // Wire everything up

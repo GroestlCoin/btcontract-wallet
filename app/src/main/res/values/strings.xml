@@ -8,7 +8,7 @@
     <string name="sets_password_ok">New password has been set successfully</string>
     <string name="sets_destruct_ok">Destruction code has been set to «%1$s»</string>
     <string name="sets_rescan_ok">Application is about to be closed now and blockchain rescan will be triggered on next launch</string>
-    <string name="greetings">Welcome to Simple Groestlcoin Wallet!\nPlease read a <a href='https://btcontract.com'>wallet manual</a> first</string>
+    <string name="greetings">Welcome to Simple Groestlcoin Wallet!</string>
     <string name="password_info">Without password you are in constant danger of losing your money. Please pick one which is at least 8 characters long</string>
     <string name="fee_live"><![CDATA[<small>Priority fee %1$s<br><font color=#999999><small>Faster transaction confirmation</small></font></small>]]></string>
     <string name="fee_default"><![CDATA[<small>Default fee %1$s<br><font color=#999999><small>Confirmation may take hours</small></font></small>]]></string>
@@ -34,7 +34,7 @@
     <!-- headers with links -->
     <string name="mnemonic_info">Mnemonic code is super important!\n<a href='https://btcontract.com/#mnemonic-code'>Read about it</a> and be sure to save it\n\nWith mnemonic code saved you can rest assured that you\'ll never lose your precious bitcoins</string>
     <string name="buy_info"><![CDATA[You are about to be taken to <strong>LocalBitcoins</strong> secure website where bitcoins can be safely purchased and instantly transferred to this wallet.<br><br>Would you like to proceed?]]></string>
-    <string name="read_settings"><![CDATA[<small>Got questions or feel lost?<br><a href=https://btcontract.com>Read a short app manual</a><br><br></small>Wallet settings]]></string>
+    <string name="read_settings">Wallet Settings</string>
     <string name="action_lock">Lock this wallet</string>
     <string name="wallet_open">Open wallet</string>
 
@@ -65,16 +65,16 @@
     <string name="dialog_next">Next</string>
     <string name="dialog_back">Back</string>
     <string name="dialog_cancel">Cancel</string>
-    <string name="input_hint_sat">amount in sat</string>
-    <string name="input_hint_btc">amount in btc</string>
-    <string name="input_hint_bit">amount in bits</string>
+    <string name="input_hint_sat">amount in μGRS</string>
+    <string name="input_hint_btc">amount in GRS</string>
+    <string name="input_hint_bit">amount in mGRS</string>
     <string name="dialog_addr_wrong">Groestlcoin address is invalid</string>
     <string name="dialog_sum_empty">Please provide an amount</string>
     <string name="dialog_sum_dusty">Current amount is dusty</string>
     <string name="spend_address_tip">where to send money</string>
     <string name="spend_address_hint">Groestlcoin address</string>
-    <string name="input_sat">&#160;Satoshi&#160;</string>
-    <string name="input_bit">&#160;Bits&#160;</string>
+    <string name="input_sat">&#160;μGRS&#160;</string>
+    <string name="input_bit">&#160;mGRS&#160;</string>
     <string name="input_btc">&#160;GRS&#160;</string>
     <string name="input_alt_btc">%1$s GRS</string>
 
@@ -116,7 +116,7 @@
     <string name="txs_fee_absent"><![CDATA[%1$s<br><strong>No fee</strong>]]></string>
     <string name="txs_sum_out"><![CDATA[<font color=#E31300>%1$s</font>]]></string>
     <string name="txs_sum_in"><![CDATA[<font color=#1BA2E0>%1$s</font>]]></string>
-    <string name="txs_view_outside">View on Groestlsight</string>
+    <string name="txs_view_outside">View on cryptoID</string>
 
     <array name="txs_confs">
         <item><![CDATA[<font color=#E31300>Not confirmed yet</font>]]></item>

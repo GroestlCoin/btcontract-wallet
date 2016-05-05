@@ -74,7 +74,7 @@
     <string name="dialog_sum_dusty">Сума занадто мала</string>
     <string name="spend_address_hint">Біткоін-адреса</string>
     <string name="input_sat">&#160;Cатоші&#160;</string>
-    <string name="input_bit">&#160;Bits&#160;</string>
+    <string name="input_bit">&#160;mGRS&#160;</string>
     <string name="input_btc">&#160;GRS&#160;</string>
     <string name="input_alt_btc">%1$s GRS</string>
 
@@ -117,7 +117,7 @@
     <string name="txs_fee_absent"><![CDATA[%1$s<br><strong>Без комісії</strong>]]></string>
     <string name="txs_sum_out"><![CDATA[<font color=#E31300>%1$s</font>]]></string>
     <string name="txs_sum_in"><![CDATA[<font color=#1BA2E0>%1$s</font>]]></string>
-    <string name="txs_view_outside">Дивитись на Groestlsight</string>
+    <string name="txs_view_outside">Дивитись на cryptoID</string>
 
     <array name="txs_confs">
         <item><![CDATA[<font color=#E31300>Ще не пiдтверджена</font>]]></item>

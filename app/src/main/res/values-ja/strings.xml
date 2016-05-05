@@ -66,15 +66,15 @@
     <string name="dialog_back">戻る</string>
     <string name="dialog_cancel">キャンセル</string>
     <string name="input_hint_btc">金額 (GRS)</string>
-    <string name="input_hint_bit">金額 (bits)</string>
-    <string name="input_hint_sat">金額 (satoshi)</string>
+    <string name="input_hint_bit">金額 (mGRS)</string>
+    <string name="input_hint_sat">金額 (μGRS)</string>
     <string name="spend_address_tip">お金を送る先</string>
     <string name="spend_address_hint">ビットコイン アドレス</string>
     <string name="dialog_addr_wrong">ビットコインのアドレスが正しくありません</string>
     <string name="dialog_sum_empty">金額を入力してください</string>
     <string name="dialog_sum_dusty">現在の金額は埃です</string>
-    <string name="input_sat">&#160;Satoshi&#160;</string>
-    <string name="input_bit">&#160;Bits&#160;</string>
+    <string name="input_sat">&#160;μGRS&#160;</string>
+    <string name="input_bit">&#160;mGRS&#160;</string>
     <string name="input_btc">&#160;GRS&#160;</string>
     <string name="input_alt_btc">%1$s GRS</string>
 
@@ -115,7 +115,7 @@
     <string name="txs_fee_absent"><![CDATA[%1$s<br><strong>No fee</strong>]]></string>
     <string name="txs_sum_out"><![CDATA[<font color=#E31300>%1$s</font>]]></string>
     <string name="txs_sum_in"><![CDATA[<font color=#1BA2E0>%1$s</font>]]></string>
-    <string name="txs_view_outside">Groestlsight で表示</string>
+    <string name="txs_view_outside">cryptoID で表示</string>
 
     <array name="txs_confs">
         <item><![CDATA[<font color=#E31300>まだ確認されません</font>]]></item>
