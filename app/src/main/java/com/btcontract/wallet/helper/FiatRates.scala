@@ -31,23 +31,31 @@ object FiatRates { me =>
 
   implicit val avgRateFmt = jsonFormat[Double, AvgRate](AvgRate, "ask")
   implicit val chainRateFmt = jsonFormat[Double, ChainRate](ChainRate, "last")
+  implicit val stringRateFmt = jsonFormat[String, GrsRate](GrsRate, "last")
   implicit val blockchainFmt = jsonFormat[ChainRate, ChainRate, ChainRate, Blockchain](Blockchain, "USD", "EUR", "CNY")
   implicit val bitaverageFmt = jsonFormat[AvgRate, AvgRate, AvgRate, Bitaverage](Bitaverage, "USD", "EUR", "CNY")
   implicit val bitpayRateFmt = jsonFormat[String, Double, BitpayRate](BitpayRate, "code", "rate")
+  implicit val poloniexRateFmt = jsonFormat[GrsRate, Poloniex](Poloniex, "BTC_GRS")
 
   // Normalizing incoming json data and converting it to rates map
-  def toRates(src: RateProvider) = Map(strDollar -> src.usd.now, strEuro -> src.eur.now, strYuan -> src.cny.now)
-  def toRates(src: RatesMap) = Map(strDollar -> src("USD").now, strEuro -> src("EUR").now, strYuan -> src("CNY").now)
+  def toRates(src: RateProvider, btc_grs: Double) = Map(strDollar -> src.usd.now*btc_grs, strEuro -> src.eur.now*btc_grs, strYuan -> src.cny.now*btc_grs)
+  def toRates(src: RatesMap, btc_grs: Double) = Map(strDollar -> src("USD").now*btc_grs, strEuro -> src("EUR").now*btc_grs, strYuan -> src("CNY").now*btc_grs)
   def bitpayNorm(src: String) = src.parseJson.asJsObject.fields("data").convertTo[BitpayList].map(rt => rt.code -> rt).toMap
 
+  def toRates(src: RateProviderGRS) = src.btc.now
+  //def poloniexGRS(src: String) = src.parseJson.asJsObject.fields("BTC_GRS").asJsObject.getFields("last").
+
   def reloadData = rand nextInt 3 match {
-    case 0 => me toRates to[Bitaverage](get("https://api.bitcoinaverage.com/ticker/global/all").body)
-    case 1 => me toRates to[Blockchain](get("https://blockchain.info/ticker").body)
-    case _ => me toRates bitpayNorm(get("https://bitpay.com/rates").body)
+    case 0 => me toRates (to[Bitaverage](get("https://api.bitcoinaverage.com/ticker/global/all").body), reloadGRSData)
+    case 1 => me toRates (to[Blockchain](get("https://blockchain.info/ticker").body), reloadGRSData)
+    case _ => me toRates (bitpayNorm(get("https://bitpay.com/rates").body), reloadGRSData)
   }
 
   def go = retry(obsOn(reloadData, IOScheduler.apply), pickInc, 1 to 30)
     .repeatWhen(_ delay 15.minute).subscribe(fresh => rates = Success apply fresh)
+
+  def reloadGRSData = me toRates to[Poloniex](get("https://poloniex.com/public?command=returnTicker").body)
+
 }
 
 // Fiat rates containers
@@ -56,9 +64,15 @@ case class AvgRate(ask: Double) extends Rate { def now = ask }
 case class ChainRate(last: Double) extends Rate { def now = last }
 case class BitpayRate(code: String, rate: Double) extends Rate { def now = rate }
 
+trait BtcRate { def now: Double}
+case class GrsRate(last: String) extends Rate {def now = last.toDouble }
+
 trait RateProvider { val usd, eur, cny: Rate }
 case class Blockchain(usd: ChainRate, eur: ChainRate, cny: ChainRate) extends RateProvider
 case class Bitaverage(usd: AvgRate, eur: AvgRate, cny: AvgRate) extends RateProvider
+
+trait RateProviderGRS { val btc: Rate }
+case class Poloniex(btc: GrsRate) extends RateProviderGRS
 
 object Fee { me =>
   var rate = Coin valueOf 15000L
