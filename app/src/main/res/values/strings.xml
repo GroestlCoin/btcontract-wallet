@@ -32,7 +32,7 @@
     <string name="destruct_too_short">Destruction code is too short</string>
 
     <!-- headers with links -->
-    <string name="mnemonic_info">Mnemonic code is super important!\n<a href='https://btcontract.com/#mnemonic-code'>Read about it</a> and be sure to save it\n\nWith mnemonic code saved you can rest assured that you\'ll never lose your precious bitcoins</string>
+    <string name="mnemonic_info">Mnemonic code is super important!\nBe sure to save it\n\nWith mnemonic code saved you can rest assured that you\'ll never lose your precious Groestlcoins</string>
     <string name="buy_info"><![CDATA[You are about to be taken to <strong>LocalBitcoins</strong> secure website where bitcoins can be safely purchased and instantly transferred to this wallet.<br><br>Would you like to proceed?]]></string>
     <string name="read_settings">Wallet Settings</string>
     <string name="action_lock">Lock this wallet</string>
