@@ -10,6 +10,7 @@ import R.drawable.{dead, conf0, conf5}
 import android.provider.Settings.{System => FontSystem}
 import android.text.format.DateUtils.getRelativeTimeSpanString
 import android.widget.AbsListView.OnScrollListener
+import org.bitcoinj.core.listeners.TransactionConfidenceEventListener
 import org.bitcoinj.wallet.Wallet
 import collection.JavaConversions.asScalaBuffer
 import org.bitcoinj.wallet.listeners.{WalletCoinsSentEventListener, WalletCoinsReceivedEventListener, WalletReorganizeEventListener}
@@ -38,7 +39,7 @@ class TxsActivity extends InfoActivity { me =>
   lazy private[this] val feeDetails = getString(txs_fee_details)
   lazy private[this] val feeAbsent = getString(txs_fee_absent)
 
-  val transactionsTracker = new MyWalletChangeListener with WalletReorganizeEventListener  with WalletCoinsReceivedEventListener with WalletCoinsSentEventListener{
+  val transactionsTracker = new MyWalletChangeListener with WalletReorganizeEventListener  with WalletCoinsReceivedEventListener with WalletCoinsSentEventListener with TransactionConfidenceEventListener{
     def onTransactionConfidenceChanged(w: Wallet, tx: Transaction) = if (tx.getConfidence.getDepthInBlocks < 2) onReorganize(w)
     def onCoinsReceived(w: Wallet, tx: Transaction, pb: Coin, nb: Coin) = if (nb isGreaterThan pb) me runOnUiThread tell(tx)
     def onCoinsSent(w: Wallet, tx: Transaction, pb: Coin, nb: Coin) = me runOnUiThread tell(tx)
@@ -111,6 +112,7 @@ class TxsActivity extends InfoActivity { me =>
       // Wait for transactions list
       <(app.kit.wallet.getTransactionsByTime, onFail) { result =>
         app.kit.wallet addChangeEventListener transactionsTracker
+        app.kit.wallet addTransactionConfidenceEventListener transactionsTracker
         //app.kit.wallet addCoinEventListener transactionsTracker
         app.kit.wallet addCoinsReceivedEventListener transactionsTracker
         app.kit.wallet addCoinsSentEventListener transactionsTracker
@@ -142,6 +144,7 @@ class TxsActivity extends InfoActivity { me =>
       app.kit.peerGroup addDiscoveredEventListener constListener
 
       app.kit.wallet addChangeEventListener tracker
+      app.kit.wallet addTransactionConfidenceEventListener tracker
       //app.kit.wallet addCoinEventListener tracker
       app.kit.wallet addCoinsReceivedEventListener tracker
       app.kit.wallet addCoinsSentEventListener tracker
@@ -159,10 +162,12 @@ class TxsActivity extends InfoActivity { me =>
     //app.kit.wallet removeCoinEventListener transactionsTracker
     app.kit.wallet removeCoinsReceivedEventListener transactionsTracker
     app.kit.wallet removeCoinsSentEventListener transactionsTracker
+    app.kit.wallet removeTransactionConfidenceEventListener transactionsTracker
     app.kit.wallet removeChangeEventListener tracker
     //app.kit.wallet removeCoinEventListener tracker
     app.kit.wallet removeCoinsReceivedEventListener tracker
     app.kit.wallet removeCoinsSentEventListener tracker
+    app.kit.wallet removeTransactionConfidenceEventListener tracker
   }
 
   def showAll(v: View) = {

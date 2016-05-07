@@ -17,9 +17,9 @@ android {
 
     defaultConfig {
         applicationId "hashengineering.btcontract.wallet"
-        versionName "1.06"
+        versionName "1.06.2"
         minSdkVersion 15
-        versionCode 39
+        versionCode 392
     }
 
     buildTypes {

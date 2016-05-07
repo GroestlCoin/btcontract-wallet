@@ -106,7 +106,7 @@ object Utils { me =>
 
 // Info stack manager
 abstract class InfoActivity extends AnimatorActivity { me =>
-  val tracker = new MyWalletChangeListener with WalletCoinsReceivedEventListener with WalletCoinsSentEventListener {
+  val tracker = new MyWalletChangeListener with WalletCoinsReceivedEventListener with WalletCoinsSentEventListener with TransactionConfidenceEventListener{
     def onCoinsReceived(w: Wallet, tx: Transaction, pb: Coin, nb: Coin) = if (nb isGreaterThan pb)
       anim(me getString tx_received format btc(nb subtract pb), Informer.RECEIVED)
 
