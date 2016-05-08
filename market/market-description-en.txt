@@ -1,0 +1,16 @@
+Simple Groestlcoin is a standalone wallet for Android devices which does not depend on any centralized service and gives you full control over your precious Groestlcoins.
+Here are some reasons to use it:
+
+- A single-page application which allows you to store your bitcoins securely and transfer them easily.
+
+- It is an HD wallet which means your balance and full transaction history can always be restored using a single mnemonic code should anything bad happen to your device.
+
+- This wallet is lightweight and blazingly fast. It works well even on a slow internet connections.
+
+- Wallet data is encrypted and password-protected. Emergency Lock and Destruction Code can preserve your funds in a situation when you are forced to reveal a password.
+
+Software license is GPLv3:
+https://www.gnu.org/licenses/gpl-3.0.en.html
+
+Source code is available at GitHub:
+https://github.com/Groestlcoin/btcontract
