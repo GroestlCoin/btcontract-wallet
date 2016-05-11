@@ -16,10 +16,10 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "hashengineering.btcontract.wallet"
-        versionName "1.06.3"
+        applicationId "hashengineering.groesltcoin.btcontract_wallet"
+        versionName "1.06.5"
         minSdkVersion 15
-        versionCode 392
+        versionCode 395
     }
 
     buildTypes {
