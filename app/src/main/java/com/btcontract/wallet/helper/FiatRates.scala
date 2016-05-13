@@ -24,6 +24,17 @@ object JsonHttpUtils {
   val get = HttpRequest.get(_: String, true) connectTimeout 15000
 }
 
+// Fiat rates containers
+trait Rate { def now: Double }
+case class AvgRate(ask: Double) extends Rate { def now = ask }
+case class ChainRate(last: Double) extends Rate { def now = last }
+case class BitpayRate(code: String, rate: Double) extends Rate { def now = rate }
+
+trait RateProvider { val usd, eur, cny: Rate }
+case class Blockchain(usd: ChainRate, eur: ChainRate, cny: ChainRate) extends RateProvider
+case class Bitaverage(usd: AvgRate, eur: AvgRate, cny: AvgRate) extends RateProvider
+
+
 object FiatRates { me =>
   type RatesMap = Map[String, Rate]
   type BitpayList = List[BitpayRate]
@@ -58,21 +69,19 @@ object FiatRates { me =>
 
 }
 
-// Fiat rates containers
-trait Rate { def now: Double }
-case class AvgRate(ask: Double) extends Rate { def now = ask }
-case class ChainRate(last: Double) extends Rate { def now = last }
-case class BitpayRate(code: String, rate: Double) extends Rate { def now = rate }
+
 
 trait BtcRate { def now: Double}
 case class GrsRate(last: String) extends Rate {def now = last.toDouble }
 
-trait RateProvider { val usd, eur, cny: Rate }
-case class Blockchain(usd: ChainRate, eur: ChainRate, cny: ChainRate) extends RateProvider
-case class Bitaverage(usd: AvgRate, eur: AvgRate, cny: AvgRate) extends RateProvider
-
 trait RateProviderGRS { val btc: Rate }
 case class Poloniex(btc: GrsRate) extends RateProviderGRS
+
+// Fee rates providers
+trait FeeProvider { def fee: Long }
+case class BitgoFee(feePerKb: Long) extends FeeProvider { def fee = feePerKb }
+case class CypherFee(low_fee_per_kb: Long) extends FeeProvider { def fee = low_fee_per_kb }
+case class InsightFee(f12: BigDecimal) extends FeeProvider { def fee = (f12 * 100000000).toLong }
 
 object Fee { me =>
   var rate = Coin valueOf 15000L
@@ -92,8 +101,3 @@ object Fee { me =>
     .repeatWhen(_ delay 30.minute).subscribe(prov => rate = Coin valueOf prov.fee)
 }
 
-// Fee rates providers
-trait FeeProvider { def fee: Long }
-case class BitgoFee(feePerKb: Long) extends FeeProvider { def fee = feePerKb }
-case class CypherFee(low_fee_per_kb: Long) extends FeeProvider { def fee = low_fee_per_kb }
-case class InsightFee(f12: BigDecimal) extends FeeProvider { def fee = (f12 * 100000000).toLong }

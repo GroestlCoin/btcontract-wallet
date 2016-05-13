@@ -12,6 +12,7 @@ import android.text.format.DateUtils.getRelativeTimeSpanString
 import android.widget.AbsListView.OnScrollListener
 import org.bitcoinj.core.listeners.TransactionConfidenceEventListener
 import org.bitcoinj.wallet.Wallet
+import android.graphics.Typeface
 import collection.JavaConversions.asScalaBuffer
 import org.bitcoinj.wallet.listeners.{WalletCoinsSentEventListener, WalletCoinsReceivedEventListener, WalletReorganizeEventListener}
 import android.view.View.OnClickListener
@@ -101,12 +102,12 @@ class TxsActivity extends InfoActivity { me =>
         val txt = for (payment <- pays) yield Html.fromHtml(payment pretty txPlus.route)
 
         // Wire everything up
-        confNumber setText Html.fromHtml(txPlus.status)
-        mkForm(me negBld dialog_back, Html fromHtml totalSum, lst)
-        outside setOnClickListener new OnClickListener { def onClick(v: View) = me startActivity site }
-        lst setOnItemClickListener onTap { position => app setBuffer pays(position - 1).adr.toString }
-        lst setAdapter new ArrayAdapter(me, R.layout.frag_top_tip, R.id.actionTip, txt.toArray)
         lst addHeaderView detailsWrapper
+        lst setAdapter new ArrayAdapter(me, R.layout.frag_top_tip, R.id.actionTip, txt.toArray)
+        lst setOnItemClickListener onTap { position => app setBuffer pays(position - 1).adr.toString }
+        outside setOnClickListener new OnClickListener { def onClick(v: View) = me startActivity site }
+        mkForm(me negBld dialog_back, Html fromHtml totalSum, lst)
+        confNumber setText Html.fromHtml(txPlus.status)
       }
 
       // Wait for transactions list
@@ -221,6 +222,7 @@ class TxsActivity extends InfoActivity { me =>
       val time = Html fromHtml when(System.currentTimeMillis, transaction.getUpdateTime)
       transactCircle setImageResource { if (isDead) dead else if (isConf) conf5 else conf0 }
       transactSum setText Html.fromHtml(new TxPlus(transaction).human)
+      transactSum setTypeface Typeface.MONOSPACE
       transactWhen setText time
     }
   }

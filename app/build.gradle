@@ -17,9 +17,9 @@ android {
 
     defaultConfig {
         applicationId "hashengineering.groesltcoin.btcontract_wallet"
-        versionName "1.06.5"
+        versionName "1.06.6"
         minSdkVersion 15
-        versionCode 395
+        versionCode 396
     }
 
     buildTypes {
